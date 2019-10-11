@@ -17,7 +17,6 @@ app.get('/movie', (req, res) => {
         console.log(req.query.genre)
         for (let i = 0; i < MOVIES.length; i++) {
             const dataGenre = MOVIES[i].genre.toLowerCase()
-            //console.log(dataGenre)
             if (dataGenre === req.query.genre.toLowerCase()) {
                 resultArr.push(MOVIES[i])
             }
@@ -28,13 +27,21 @@ app.get('/movie', (req, res) => {
         console.log(req.query.country)
         for (let i = 0; i < MOVIES.length; i++) {
             const data = MOVIES[i].country.toLowerCase()
-            //console.log(dataGenre)
             if (data === req.query.country.toLowerCase()) {
                 resultArr.push(MOVIES[i])
             }
         }
     }
 
+    if (req.query.avg_vote) {
+        console.log(req.query.avg_vote)
+        for (let i = 0; i < MOVIES.length; i++) {
+            const data = MOVIES[i].avg_vote
+            if (data >= req.query.avg_vote) {
+                resultArr.push(MOVIES[i])
+            }
+        }
+    }
 
     res.json(resultArr)
 })
