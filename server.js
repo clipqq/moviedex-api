@@ -4,15 +4,12 @@ require('dotenv').config()
 const MOVIES = require('./movies-data.json')
 const cors = require('cors')
 const helmet = require('helmet')
-
-console.log(process.env.API_TOKEN)
-
 const app = express()
+const morganSetting = process.env.NODE_ENV === 'production' ? 'tiny' : 'common'
 
-app.use(morgan('dev'))
+app.use(morgan(morganSetting))
 app.use(cors())
 app.use(helmet())
-
 app.use((req, res, next) => {
     const apiToken = process.env.API_TOKEN
     const authToken = req.get('Authorization')
@@ -29,7 +26,6 @@ app.get('/movie', (req, res) => {
     let resultArr = []
 
     if (req.query.genre) {
-        console.log(req.query.genre)
         for (let i = 0; i < MOVIES.length; i++) {
             const dataGenre = MOVIES[i].genre.toLowerCase()
             if (dataGenre === req.query.genre.toLowerCase()) {
@@ -39,7 +35,6 @@ app.get('/movie', (req, res) => {
     }
 
     if (req.query.country) {
-        console.log(req.query.country)
         for (let i = 0; i < MOVIES.length; i++) {
             const data = MOVIES[i].country.toLowerCase()
             if (data === req.query.country.toLowerCase()) {
@@ -49,7 +44,6 @@ app.get('/movie', (req, res) => {
     }
 
     if (req.query.avg_vote) {
-        console.log(req.query.avg_vote)
         for (let i = 0; i < MOVIES.length; i++) {
             const data = MOVIES[i].avg_vote
             if (data >= req.query.avg_vote) {
@@ -61,8 +55,22 @@ app.get('/movie', (req, res) => {
     res.json(resultArr)
 })
 
-const PORT = 8000
-
-app.listen(PORT, () => {
-    console.log(`Movie API Server listening at http://localhost:${PORT}`)
+app.use((error, req, res, next) => {
+    let response
+    if (process.env.NODE_ENV === 'production') {
+        response = {
+            error: {
+                message: 'server error'
+            }
+        }
+    } else {
+        response = {
+            error
+        }
+    }
+    res.status(500).json(response)
 })
+
+const PORT = process.env.PORT || 8000
+
+app.listen(PORT, () => {})
