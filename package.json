@@ -19,7 +19,7 @@
   },
   "dependencies": {
     "express": "*",
-    "body-parser":"*",
+    "body-parser": "*",
     "cors": "^2.8.5",
     "dotenv": "^8.1.0",
     "env": "0.0.2",
