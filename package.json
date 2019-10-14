@@ -18,7 +18,8 @@
     "nodemon": "^1.19.3"
   },
   "dependencies": {
-    "express": "^4.17.1",
+    "express": "*",
+    "body-parser":"*",
     "cors": "^2.8.5",
     "dotenv": "^8.1.0",
     "env": "0.0.2",
