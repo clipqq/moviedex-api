@@ -11,7 +11,6 @@ app.use(morgan(morganSetting))
 app.use(cors())
 app.use(helmet())
 app.use((req, res, next) => {
-    const apiToken = process.env.API_TOKEN
     const authToken = req.get('Authorization')
 
     if (!authToken || authToken.split(' ')[1] !== apiToken) {
