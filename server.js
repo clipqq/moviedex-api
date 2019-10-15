@@ -6,13 +6,13 @@ const cors = require('cors')
 const helmet = require('helmet')
 const app = express()
 const morganSetting = process.env.NODE_ENV === 'production' ? 'tiny' : 'common'
+const apiToken = process.env.API_TOKEN
 
 app.use(morgan(morganSetting))
 app.use(cors())
 app.use(helmet())
 app.use((req, res, next) => {
     const authToken = req.get('Authorization')
-
     if (!authToken || authToken.split(' ')[1] !== apiToken) {
         return res.status(401).json({
             error: 'Unauthorized request'
@@ -23,7 +23,7 @@ app.use((req, res, next) => {
 
 app.get('/movie', (req, res) => {
     let resultArr = []
-
+    console.log(`made it here`)
     if (req.query.genre) {
         for (let i = 0; i < MOVIES.length; i++) {
             const dataGenre = MOVIES[i].genre.toLowerCase()
